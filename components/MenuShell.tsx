@@ -222,6 +222,24 @@ export default function MenuShell({
             <span className={styles.langSep}>|</span>
             <a href="/menu/en" className={`${styles.langBtn} ${locale === 'en' ? styles.langActive : ''}`}>EN</a>
           </div>
+
+          {socialLinks.length > 0 && (
+            <div className={styles.headerSocial}>
+              {socialLinks.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className={styles.headerSocialLink}
+                  title={s.label}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </header>
 

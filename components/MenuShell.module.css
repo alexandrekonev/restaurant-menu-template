@@ -44,6 +44,27 @@
   font-size: 0.72rem;
 }
 
+/* Social icons in header — below language toggle */
+.headerSocial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  margin-top: 0.6rem;
+}
+
+.headerSocialLink {
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.headerSocialLink:hover {
+  color: rgba(255, 255, 255, 0.95);
+  transform: scale(1.15);
+}
+
 /* Hero */
 .hero {
   padding: 1rem 2rem 1.2rem;
