@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import type { Locale } from '@/lib/i18n'
 import styles from './ReservationModal.module.css'
 
@@ -16,7 +18,7 @@ interface Props {
 type FieldErrors = Partial<Record<string, string>>
 
 function validatePhone(v: string) {
-  const cleaned = v.replace(/[\s\-().+]/g, '')
+  const cleaned = v.replace(/[\s\-()+]/g, '')
   return /^\d{8,}$/.test(cleaned)
 }
 
@@ -24,13 +26,30 @@ function validateEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())
 }
 
+function toIsoDate(d: Date): string {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+// Custom input for react-datepicker — forwards the ref so the
+// library can position its calendar, keeps our name/class/styling.
+const DateInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>((props, ref) => (
+  <input {...props} ref={ref} name="date" readOnly />
+))
+DateInput.displayName = 'DateInput'
+
 export default function ReservationModal({ locale, venueName, onClose }: Props) {
   const [form, setForm] = useState({
     eventType: '',
     name: '',
     phone: '',
     email: '',
-    date: '',
+    date: '',      // ISO string YYYY-MM-DD
     guests: '',
     message: '',
   })
@@ -42,57 +61,55 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
   const eventTypes = isBg ? EVENT_TYPES_BG : EVENT_TYPES_EN
 
   const labels = {
-    title:        isBg ? 'Резервация'         : 'Reservation',
-    eventType:    isBg ? 'Тип събитие'        : 'Event type',
-    name:         isBg ? 'Имена'              : 'Name',
-    phone:        isBg ? 'Телефон'            : 'Phone',
-    email:        isBg ? 'Имейл'              : 'Email',
-    date:         isBg ? 'Дата'               : 'Date',
-    guests:       isBg ? 'Брой гости'         : 'Number of guests',
-    message:      isBg ? 'Описание / Бележки' : 'Description / Notes',
-    send:         isBg ? 'Изпрати'            : 'Send',
-    sending:      isBg ? 'Изпращане...'       : 'Sending...',
-    sent:         isBg ? 'Заявката е изпратена! Ще се свържем с вас скоро.' : 'Request sent! We will contact you shortly.',
-    error:        isBg ? 'Грешка при изпращане. Опитайте отново.'           : 'Error sending. Please try again.',
-    selectType:   isBg ? '— Изберете тип —'   : '— Select type —',
-    errGuests:    isBg ? 'Моля въведете брой гости'                         : 'Please enter number of guests',
+    title:          isBg ? 'Резервация'              : 'Reservation',
+    eventType:      isBg ? 'Тип събитие'             : 'Event type',
+    name:           isBg ? 'Имена'                   : 'Name',
+    phone:          isBg ? 'Телефон'                 : 'Phone',
+    email:          isBg ? 'Имейл'                   : 'Email',
+    date:           isBg ? 'Дата'                    : 'Date',
+    datePlaceholder:isBg ? 'дд.мм.гггг'              : 'dd.mm.yyyy',
+    guests:         isBg ? 'Брой гости'              : 'Number of guests',
+    message:        isBg ? 'Описание / Бележки'      : 'Description / Notes',
+    send:           isBg ? 'Изпрати'                 : 'Send',
+    sending:        isBg ? 'Изпращане...'            : 'Sending...',
+    sent:           isBg ? 'Заявката е изпратена! Ще се свържем с вас скоро.' : 'Request sent! We will contact you shortly.',
+    error:          isBg ? 'Грешка при изпращане. Опитайте отново.'           : 'Error sending. Please try again.',
+    selectType:     isBg ? '— Изберете тип —'        : '— Select type —',
+    errGuests:      isBg ? 'Моля въведете брой гости'                         : 'Please enter number of guests',
     errGuestsRange: isBg ? 'Моля въведете валиден брой от 1 до 99 или позвънете' : 'Please enter a valid number from 1 to 99 or call us',
-    errEmail:     isBg ? 'Моля въведете валиден имейл адрес'                : 'Please enter a valid email address',
-    errPhone:     isBg ? 'Моля въведете валиден телефонен номер'            : 'Please enter a valid phone number',
-    errName:      isBg ? 'Моля въведете имена'                              : 'Please enter your name',
-    errDate:      isBg ? 'Моля изберете дата'                               : 'Please select a date',
+    errEmail:       isBg ? 'Моля въведете валиден имейл адрес'                : 'Please enter a valid email address',
+    errPhone:       isBg ? 'Моля въведете валиден телефонен номер'            : 'Please enter a valid phone number',
+    errName:        isBg ? 'Моля въведете имена'                              : 'Please enter your name',
+    errDate:        isBg ? 'Моля изберете дата'                               : 'Please select a date',
+  }
+
+  const clearError = (name: string) => {
+    if (errors[name]) setErrors(prev => { const n = { ...prev }; delete n[name]; return n })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setForm(f => ({ ...f, [name]: value }))
-    // Clear the error for this field as the user types
-    if (errors[name]) setErrors(prev => { const next = { ...prev }; delete next[name]; return next })
+    clearError(name)
+  }
+
+  const handleDateChange = (d: Date | null) => {
+    setForm(f => ({ ...f, date: d ? toIsoDate(d) : '' }))
+    clearError('date')
   }
 
   const validate = (): FieldErrors => {
     const errs: FieldErrors = {}
-
-    if (!form.name.trim())
-      errs.name = labels.errName
-
-    if (!form.phone.trim() || !validatePhone(form.phone))
-      errs.phone = labels.errPhone
-
-    if (!form.email.trim() || !validateEmail(form.email))
-      errs.email = labels.errEmail
-
-    if (!form.date)
-      errs.date = labels.errDate
-
+    if (!form.name.trim())                                errs.name   = labels.errName
+    if (!form.phone.trim() || !validatePhone(form.phone)) errs.phone  = labels.errPhone
+    if (!form.email.trim() || !validateEmail(form.email)) errs.email  = labels.errEmail
+    if (!form.date)                                       errs.date   = labels.errDate
     if (!form.guests.trim()) {
       errs.guests = labels.errGuests
     } else {
       const n = Number(form.guests)
-      if (!Number.isInteger(n) || n < 1 || n > 99)
-        errs.guests = labels.errGuestsRange
+      if (!Number.isInteger(n) || n < 1 || n > 99)       errs.guests = labels.errGuestsRange
     }
-
     return errs
   }
 
@@ -101,14 +118,12 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
     const errs = validate()
     if (Object.keys(errs).length > 0) {
       setErrors(errs)
-      // Scroll to first invalid field
       const firstKey = Object.keys(errs)[0]
       const el = formRef.current?.querySelector(`[name="${firstKey}"]`) as HTMLElement | null
       el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       el?.focus()
       return
     }
-
     setStatus('sending')
     try {
       const res = await fetch('/api/reservation', {
@@ -116,18 +131,16 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, locale, venueName }),
       })
-      if (res.ok) {
-        setStatus('sent')
-      } else {
-        setStatus('error')
-      }
+      setStatus(res.ok ? 'sent' : 'error')
     } catch {
       setStatus('error')
     }
   }
 
   const inputClass = (name: string) =>
-    `${styles.input}${errors[name] ? ` ${styles.inputError}` : ''}`
+    [styles.input, errors[name] ? styles.inputError : ''].filter(Boolean).join(' ')
+
+  const selectedDate = form.date ? new Date(form.date + 'T12:00:00') : null
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -148,17 +161,19 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
             {/* Event type */}
             <div className={styles.field}>
               <label className={styles.label}>{labels.eventType}</label>
-              <select
-                name="eventType"
-                value={form.eventType}
-                onChange={handleChange}
-                className={styles.select}
-              >
-                <option value="">{labels.selectType}</option>
-                {eventTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
+              <div className={styles.selectWrapper}>
+                <select
+                  name="eventType"
+                  value={form.eventType}
+                  onChange={handleChange}
+                  className={styles.select}
+                >
+                  <option value="">{labels.selectType}</option>
+                  {eventTypes.map(type => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {/* Name */}
@@ -176,7 +191,7 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
               {errors.name && <p className={styles.fieldError}>{errors.name}</p>}
             </div>
 
-            {/* Phone + Email row */}
+            {/* Phone + Email */}
             <div className={styles.row}>
               <div className={styles.field}>
                 <label className={styles.label}>{labels.phone} *</label>
@@ -208,17 +223,21 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
               </div>
             </div>
 
-            {/* Date + Guests row */}
+            {/* Date + Guests */}
             <div className={styles.row}>
               <div className={styles.field}>
                 <label className={styles.label}>{labels.date} *</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={form.date}
-                  onChange={handleChange}
-                  className={inputClass('date')}
-                  min={new Date().toISOString().split('T')[0]}
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  minDate={new Date()}
+                  dateFormat="dd.MM.yyyy"
+                  placeholderText={labels.datePlaceholder}
+                  customInput={<DateInput className={inputClass('date')} />}
+                  wrapperClassName={styles.datePickerWrapper}
+                  popperProps={{ strategy: 'fixed' }}
+                  popperPlacement="bottom-start"
+                  calendarClassName={styles.datePicker}
                 />
                 {errors.date && <p className={styles.fieldError}>{errors.date}</p>}
               </div>
@@ -252,9 +271,7 @@ export default function ReservationModal({ locale, venueName, onClose }: Props) 
               />
             </div>
 
-            {status === 'error' && (
-              <p className={styles.errorMsg}>{labels.error}</p>
-            )}
+            {status === 'error' && <p className={styles.errorMsg}>{labels.error}</p>}
 
             <button
               type="submit"
