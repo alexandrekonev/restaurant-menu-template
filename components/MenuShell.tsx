@@ -158,9 +158,15 @@ export default function MenuShell({
   }
 
   // ── Centre nav button whenever active slug changes (click OR scroll) ─────
+  // We scroll the nav strip manually instead of using scrollIntoView, because
+  // scrollIntoView(block:'nearest') can also scroll the window vertically in
+  // Firefox (even on a sticky element), which corrupts the click-scroll lock.
   useEffect(() => {
-    const btn = document.getElementById(`nav-${activeSlug}`)
-    if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+    const nav = navRef.current
+    const btn = document.getElementById(`nav-${activeSlug}`) as HTMLElement | null
+    if (!nav || !btn) return
+    const target = btn.offsetLeft - nav.offsetWidth / 2 + btn.offsetWidth / 2
+    nav.scrollTo({ left: Math.max(0, target), behavior: 'smooth' })
   }, [activeSlug])
 
   // ── Click: lock observer, scroll section into view ───────────────────────
