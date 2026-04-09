@@ -110,6 +110,8 @@ export default function MenuShell({
   const navRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const isScrollingRef = useRef(false)
+  const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const intersectingRef = useRef<Set<string>>(new Set())
 
   // ── Derived settings with fallbacks ──────────────────────────────────────
   const venueName   = settings?.venueName     || FALLBACK_NAME
@@ -155,13 +157,17 @@ export default function MenuShell({
     return grouped
   }
 
-  // ── Scroll helpers ────────────────────────────────────────────────────────
-  const scrollToSection = (slug: string) => {
-    setActiveSlug(slug)
-    const btn = document.getElementById(`nav-${slug}`)
+  // ── Centre nav button whenever active slug changes (click OR scroll) ─────
+  useEffect(() => {
+    const btn = document.getElementById(`nav-${activeSlug}`)
     if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+  }, [activeSlug])
+
+  // ── Click: lock observer, scroll section into view ───────────────────────
+  // Lock is released by the scroll-end detector below (not a fixed timeout)
+  const scrollToSection = (slug: string) => {
     isScrollingRef.current = true
-    setTimeout(() => { isScrollingRef.current = false }, 1000)
+    setActiveSlug(slug)
     setTimeout(() => {
       const el = document.getElementById(`section-${slug}`)
       if (!el) return
@@ -171,35 +177,65 @@ export default function MenuShell({
     }, 10)
   }
 
-  // ── IntersectionObserver for active nav ──────────────────────────────────
+  // ── IntersectionObserver: track ALL visible sections in a Set ─────────────
+  // The observer only delivers *changed* entries per callback, so we maintain
+  // a persistent Set and always pick the first category (menu order = top-down)
+  // that is currently inside the detection band.
   useEffect(() => {
     if (categories.length === 0) return
+    const intersecting = intersectingRef.current
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !isScrollingRef.current) {
-            const slug = entry.target.getAttribute('data-slug')
-            if (slug) setActiveSlug(slug)
+          const slug = entry.target.getAttribute('data-slug')
+          if (!slug) return
+          if (entry.isIntersecting) {
+            intersecting.add(slug)
+          } else {
+            intersecting.delete(slug)
           }
         })
+        // Don't fight the programmatic scroll animation
+        if (isScrollingRef.current) return
+        if (intersecting.size === 0) return
+        // First category in menu order that is currently visible = topmost on screen
+        const active = categories.find((cat) => intersecting.has(cat.slug))
+        if (active) setActiveSlug(active.slug)
       },
-      { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
+      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
     )
+
     categories.forEach((cat) => {
       const el = document.getElementById(`section-${cat.slug}`)
       if (el) observerRef.current?.observe(el)
     })
-    return () => observerRef.current?.disconnect()
+
+    return () => {
+      observerRef.current?.disconnect()
+      intersecting.clear()
+    }
   }, [categories])
 
-  // ── Back-to-top: show after 10% scroll ───────────────────────────────────
+  // ── Scroll: back-to-top visibility + release click-scroll lock ───────────
+  // Releases isScrollingRef 150 ms after the last scroll event so the
+  // IntersectionObserver can resume tracking after a click-triggered scroll.
   useEffect(() => {
     const onScroll = () => {
       const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
       setShowBackToTop(scrolled > 0.1)
+      if (isScrollingRef.current) {
+        if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current)
+        scrollEndTimerRef.current = setTimeout(() => {
+          isScrollingRef.current = false
+        }, 150)
+      }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current)
+    }
   }, [])
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
