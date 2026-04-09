@@ -178,17 +178,20 @@
 }
 
 .successMessage p {
-  color: var(--silver);
-  font-size: 1rem;
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-@media (max-width: 480px) {
-  .modal {
-    padding: 1.5rem 1.25rem;
-  }
+/* ── Field-level validation ─────────────────────────────────────────────── */
+.inputError {
+  border-color: #e06060 !important;
+  box-shadow: 0 0 0 2px rgba(224, 96, 96, 0.2);
+}
 
-  .row {
-    grid-template-columns: 1fr;
-  }
+.fieldError {
+  color: #e06060;
+  font-size: 0.78rem;
+  margin: 0.25rem 0 0;
+  line-height: 1.3;
 }
