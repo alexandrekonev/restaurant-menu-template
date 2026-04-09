@@ -561,6 +561,9 @@
   justify-content: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   transition: background 0.2s ease, color 0.2s ease;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .fabCall:hover {
@@ -569,22 +572,23 @@
 }
 
 .fabReservation {
-  padding: 0.6rem 1.2rem;
-  border-radius: 22px;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border-radius: 1.4rem;
   background: var(--copper);
-  color: #fff;
-  font-family: 'Cormorant SC', serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   border: none;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: background 0.2s ease;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  transition: background 0.2s ease, transform 0.15s ease;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
 }
 
 .fabReservation:hover {
-  background: var(--copper-lt);
-  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--copper) 80%, #fff);
 }
