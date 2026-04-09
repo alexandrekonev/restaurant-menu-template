@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { client } from '@/sanity/lib/client'
 import { settingsQuery } from '@/sanity/lib/queries'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       )
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY)
 
     const isBg = locale === 'bg'
     const subject = isBg
