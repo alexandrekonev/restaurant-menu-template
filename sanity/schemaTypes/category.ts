@@ -5,7 +5,13 @@ export default defineType({
   name: 'category',
   title: 'Category',
   type: 'document',
-  orderings: [orderRankOrdering],
+  orderings: [
+    orderRankOrdering,
+    { title: 'А→Я (Bulgarian)', name: 'nameBgAsc',  by: [{ field: 'name.bg', direction: 'asc'  }] },
+    { title: 'A→Z (English)',   name: 'nameEnAsc',  by: [{ field: 'name.en', direction: 'asc'  }] },
+    { title: 'Newest First',    name: 'createdDesc', by: [{ field: '_createdAt', direction: 'desc' }] },
+    { title: 'Oldest First',    name: 'createdAsc',  by: [{ field: '_createdAt', direction: 'asc'  }] },
+  ],
   preview: {
     select: {
       title: 'name.bg',

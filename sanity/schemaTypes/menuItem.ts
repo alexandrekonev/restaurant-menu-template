@@ -5,7 +5,17 @@ export default defineType({
   name: 'menuItem',
   title: 'Menu Item',
   type: 'document',
-  orderings: [orderRankOrdering],
+  orderings: [
+    orderRankOrdering,
+    { title: 'А→Я (Bulgarian)',  name: 'nameBgAsc',    by: [{ field: 'name.bg',     direction: 'asc'  }] },
+    { title: 'A→Z (English)',    name: 'nameEnAsc',    by: [{ field: 'name.en',     direction: 'asc'  }] },
+    { title: 'Newest First',     name: 'createdDesc',  by: [{ field: '_createdAt',  direction: 'desc' }] },
+    { title: 'Oldest First',     name: 'createdAsc',   by: [{ field: '_createdAt',  direction: 'asc'  }] },
+    { title: 'Featured First',   name: 'featuredDesc', by: [{ field: 'isFeatured',  direction: 'desc' }] },
+    { title: 'New Items First',  name: 'newDesc',      by: [{ field: 'isNew',       direction: 'desc' }] },
+    { title: 'Price Low→High',   name: 'priceAsc',     by: [{ field: 'price',       direction: 'asc'  }] },
+    { title: 'Price High→Low',   name: 'priceDesc',    by: [{ field: 'price',       direction: 'desc' }] },
+  ],
   preview: {
     select: {
       title: 'name.bg',

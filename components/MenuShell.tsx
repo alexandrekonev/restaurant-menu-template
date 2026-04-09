@@ -35,6 +35,11 @@ const IconGoogle = () => (
     <path d="M12 11.5v3h5.5c-.22 1.27-1.7 3.71-5.5 3.71-3.31 0-6-2.74-6-6.21s2.69-6.21 6-6.21c1.88 0 3.14.8 3.86 1.49l2.63-2.53C16.8 3.2 14.6 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10c5.77 0 9.6-4.06 9.6-9.78 0-.65-.07-1.15-.18-1.65H12z"/>
   </svg>
 )
+const IconGoogleReview = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 11.5v3h5.5c-.22 1.27-1.7 3.71-5.5 3.71-3.31 0-6-2.74-6-6.21s2.69-6.21 6-6.21c1.88 0 3.14.8 3.86 1.49l2.63-2.53C16.8 3.2 14.6 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10c5.77 0 9.6-4.06 9.6-9.78 0-.65-.07-1.15-.18-1.65H12z"/>
+  </svg>
+)
 const IconPhone = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
@@ -200,10 +205,11 @@ export default function MenuShell({
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
   const workingHours: any[] = settings?.workingHours || []
+  const googleWriteReviewUrl = settings?.googleWriteReviewUrl || null
   const socialLinks = [
-    { url: settings?.instagramUrl, icon: <IconInstagram />, label: 'Instagram' },
-    { url: settings?.facebookUrl,  icon: <IconFacebook />,  label: 'Facebook' },
-    { url: settings?.tiktokUrl,    icon: <IconTikTok />,    label: 'TikTok' },
+    { url: settings?.instagramUrl,    icon: <IconInstagram />, label: 'Instagram' },
+    { url: settings?.facebookUrl,     icon: <IconFacebook />,  label: 'Facebook' },
+    { url: settings?.tiktokUrl,       icon: <IconTikTok />,    label: 'TikTok' },
     { url: settings?.googleReviewUrl, icon: <IconGoogle />, label: 'Google Review' },
   ].filter(s => !!s.url)
 
@@ -223,7 +229,7 @@ export default function MenuShell({
             <a href="/menu/en" className={`${styles.langBtn} ${locale === 'en' ? styles.langActive : ''}`}>EN</a>
           </div>
 
-          {socialLinks.length > 0 && (
+          {(socialLinks.length > 0 || googleWriteReviewUrl) && (
             <div className={styles.headerSocial}>
               {socialLinks.map((s) => (
                 <a
@@ -238,6 +244,19 @@ export default function MenuShell({
                   {s.icon}
                 </a>
               ))}
+              {googleWriteReviewUrl && (
+                <a
+                  href={googleWriteReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Write a Google Review"
+                  className={styles.googleReviewBtn}
+                  title="Write a Google Review"
+                >
+                  <IconGoogleReview />
+                  <span>Review</span>
+                </a>
+              )}
             </div>
           )}
         </div>

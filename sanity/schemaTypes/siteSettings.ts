@@ -103,9 +103,15 @@ export default defineType({
     }),
     defineField({
       name: 'googleReviewUrl',
-      title: 'Google Review URL',
+      title: 'Google Maps / Business Page URL',
       type: 'url',
-      description: 'Leave empty to hide the Google Review link in the footer',
+      description: 'Link to your Google Maps business listing',
+    }),
+    defineField({
+      name: 'googleWriteReviewUrl',
+      title: 'Google — Write a Review URL',
+      type: 'url',
+      description: 'Direct link to the Google review form. Get it from Google My Business → "Ask for reviews"',
     }),
 
     // ── Working hours ─────────────────────────────────────────────────────────
