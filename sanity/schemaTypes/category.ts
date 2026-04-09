@@ -14,8 +14,16 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'name.bg',
-      subtitle: 'displayStyle',
+      bg:         'name.bg',
+      icon:       'icon',
+      isFeatured: 'isFeatured',
+      displayStyle: 'displayStyle',
+    },
+    prepare({ bg, icon, isFeatured, displayStyle }: { bg?: string; icon?: string; isFeatured?: boolean; displayStyle?: string }) {
+      return {
+        title:    `${isFeatured ? '★ ' : ''}${icon ?? '📂'} ${bg ?? '—'}`,
+        subtitle: displayStyle,
+      }
     },
   },
   fields: [
@@ -71,6 +79,13 @@ export default defineType({
       title: 'Active',
       type: 'boolean',
       initialValue: true,
+    }),
+    defineField({
+      name: 'isFeatured',
+      title: 'Открояване (Featured)',
+      type: 'boolean',
+      description: 'Показва категорията в различен цвят за визуално привличане на внимание',
+      initialValue: false,
     }),
     defineField({
       name: 'order',

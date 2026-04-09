@@ -84,6 +84,7 @@ export interface CategoryData {
   slug: string
   icon?: string | null
   displayStyle: 'cards' | 'list' | 'compact'
+  isFeatured?: boolean | null
 }
 
 interface MenuShellProps {
@@ -325,7 +326,11 @@ export default function MenuShell({
               key={cat._id}
               id={`nav-${cat.slug}`}
               onClick={() => scrollToSection(cat.slug)}
-              className={`${styles.categoryButton} ${activeSlug === cat.slug ? styles.active : ''}`}
+              className={[
+                styles.categoryButton,
+                activeSlug === cat.slug ? styles.active : '',
+                cat.isFeatured ? styles.featuredBtn : '',
+              ].filter(Boolean).join(' ')}
             >
               {cat.icon && <span>{cat.icon}</span>}
               <span>{t(cat.name, locale)}</span>
@@ -361,7 +366,8 @@ export default function MenuShell({
               data-slug={cat.slug}
               className={styles.section}
             >
-              <h2 className={styles.sectionTitle}>
+              <h2 className={`${styles.sectionTitle}${cat.isFeatured ? ` ${styles.featuredTitle}` : ''}`}>
+                {cat.isFeatured && <span className={styles.featuredMark} aria-hidden="true">◆</span>}
                 {cat.icon && <span className={styles.sectionIcon}>{cat.icon}</span>}
                 {t(cat.name, locale)}
               </h2>

@@ -31,7 +31,8 @@ export const categoriesQuery = `
     name,
     "slug": slug.current,
     icon,
-    displayStyle
+    displayStyle,
+    isFeatured
   }
 `
 
@@ -66,10 +67,4 @@ export const todayMenuQuery = `
       dishes[] {
         name,
         description,
-        price,
-        tags,
-        "image": image.asset->url
-      }
-    }
-  }
-`
+        price,

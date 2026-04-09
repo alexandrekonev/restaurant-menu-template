@@ -229,6 +229,28 @@
   font-weight: 600;
 }
 
+/* Featured nav button */
+.categoryButton.featuredBtn {
+  background: var(--copper);
+  color: #fff;
+  border-bottom-color: transparent;
+  border-radius: 4px;
+  font-weight: 600;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.categoryButton.featuredBtn:hover {
+  background: color-mix(in srgb, var(--copper) 80%, #000);
+  color: #fff;
+}
+
+.categoryButton.featuredBtn.active {
+  background: color-mix(in srgb, var(--copper) 70%, #000);
+  border-bottom-color: transparent;
+  color: #fff;
+}
+
 /* ── Main Content ── */
 .main {
   flex: 1;
@@ -276,6 +298,18 @@
 
 .sectionIcon {
   font-size: 1.4rem;
+}
+
+/* Featured section title */
+.featuredTitle {
+  color: var(--copper-lt);
+}
+
+.featuredMark {
+  font-size: 0.9rem;
+  color: var(--copper);
+  opacity: 0.85;
+  flex-shrink: 0;
 }
 
 .divider {
