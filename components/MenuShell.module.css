@@ -1,0 +1,547 @@
+/* ── Container ── */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark);
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(180deg, var(--copper-dk) 0%, #6b4428 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Language toggle — sits below the logo, centred */
+.langToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.langBtn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.1rem 0.2rem;
+}
+
+.langBtn:hover {
+  color: #fff;
+}
+
+.langActive {
+  color: rgba(255,255,255,0.9);
+}
+
+.langSep {
+  color: rgba(255,255,255,0.25);
+  font-size: 0.72rem;
+}
+
+/* Hero */
+.hero {
+  padding: 1rem 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.heroEmblem {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+
+.heroLogo {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+/* ── Happy Hour Overlay ── */
+.happyHourOverlay {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3a1e0a 0%, var(--copper-dk) 40%, #b87333 70%, #3a1e0a 100%);
+  background-size: 200% 100%;
+  animation: shimmer 4s ease-in-out infinite;
+  padding: 1.1rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
+.happyHourOverlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 40px,
+    rgba(255,255,255,0.03) 40px,
+    rgba(255,255,255,0.03) 41px
+  );
+  pointer-events: none;
+}
+
+.happyHourInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.happyHourLabel {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+.happyHourText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-style: italic;
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.happyHourRule {
+  width: 48px;
+  height: 1px;
+  background: rgba(255,255,255,0.35);
+  margin-top: 0.15rem;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Category Navigation ── */
+.categoryNav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--dark-card);
+  border-bottom: 2px solid var(--divider);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.categoryNav::-webkit-scrollbar {
+  display: none;
+}
+
+.categoryScroller {
+  display: flex;
+  gap: 0;
+  padding: 0 1rem;
+  min-width: min-content;
+}
+
+.categoryButton {
+  padding: 0.9rem 1.4rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--warm-gray);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  margin-bottom: -2px;
+}
+
+.categoryButton:hover {
+  color: var(--silver);
+}
+
+.categoryButton.active {
+  color: var(--copper);
+  border-bottom-color: var(--copper);
+  font-weight: 600;
+}
+
+/* ── Main Content ── */
+.main {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2.5rem 2rem 4rem;
+}
+
+/* ── Lunch Section ── */
+.lunchSection {
+  background-color: var(--dark-card);
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+}
+
+.lunchSectionTitle {
+  font-family: 'Cormorant SC', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--silver);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Category Section ── */
+.section {
+  margin-bottom: 3.5rem;
+  scroll-margin-top: 64px;
+}
+
+.sectionTitle {
+  font-family: 'Cormorant SC', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--silver);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionIcon {
+  font-size: 1.4rem;
+}
+
+.divider {
+  height: 1px;
+  background: var(--divider);
+  margin-bottom: 1.8rem;
+}
+
+.empty {
+  color: var(--warm-gray);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* ── Cards Grid ── */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── List View ── */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.subCategoryGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subCategoryTitle {
+  font-family: 'Cormorant SC', serif;
+  font-size: 1.1rem;
+  color: var(--copper-lt);
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--divider);
+  letter-spacing: 0.04em;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Footer ── */
+.footer {
+  background: linear-gradient(135deg, var(--copper-dk) 0%, #3a2518 100%);
+  border-top: 1px solid var(--divider);
+  padding: 2.5rem 2rem;
+}
+
+.footerInner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLogo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.footerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.85rem;
+}
+
+.address {
+  color: rgba(255,255,255,0.8);
+  margin: 0;
+}
+
+.note {
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  font-style: italic;
+}
+
+.copyright {
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .headerInner {
+    padding: 1rem 1rem;
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .siteName {
+    font-size: 1.2rem;
+  }
+
+  .langToggle {
+    right: 1rem;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  .categoryNav {
+    top: 0;
+  }
+
+  .categoryButton {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .main {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .section {
+    scroll-margin-top: 56px;
+  }
+
+  .sectionTitle {
+    font-size: 1.4rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .footerInner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .siteName {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .categoryButton {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.75rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
+
+  .section {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ── Working Hours ──────────────────────────────────────────────────────────── */
+.workingHours {
+  margin: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--warm-gray);
+}
+
+.hoursRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hoursDay {
+  min-width: 2.8rem;
+  font-weight: 600;
+  color: var(--silver);
+  font-family: 'Cormorant SC', serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hoursTime {
+  color: var(--copper-lt);
+}
+
+.hoursConcept {
+  font-style: italic;
+  opacity: 0.7;
+  font-size: 0.75rem;
+}
+
+/* ── Social links ───────────────────────────────────────────────────────────── */
+.socialLinks {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+
+.socialLink {
+  color: var(--warm-gray);
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.socialLink:hover {
+  color: var(--copper-lt);
+  transform: scale(1.15);
+}
+
+/* ── Floating Back-to-Top ───────────────────────────────────────────────────── */
+.fabTop {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 1.25rem;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--dark-card);
+  border: 1px solid var(--copper);
+  color: var(--copper-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.fabTop.fabVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.fabTop:hover {
+  background: var(--copper);
+  color: #fff;
+}
+
+/* ── Floating Reservation + Call group ─────────────────────────────────────── */
+.fabGroup {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fabCall {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--dark-card);
+  border: 1px solid var(--copper);
+  color: var(--copper-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.fabCall:hover {
+  background: var(--copper);
+  color: #fff;
+}
+
+.fabReservation {
+  padding: 0.6rem 1.2rem;
+  border-radius: 22px;
+  background: var(--copper);
+  color: #fff;
+  font-family: 'Cormorant SC', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.fabReservation:hover {
+  background: var(--copper-lt);
+  transform: translateY(-1px);
+}

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+out/
+
+# Environment files (never commit!)
+.env.local
+.env*.local
+
+# Sanity Studio build
+.sanity/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
