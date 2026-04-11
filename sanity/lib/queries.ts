@@ -67,4 +67,10 @@ export const todayMenuQuery = `
       dishes[] {
         name,
         description,
-        price,
+        price,
+        tags,
+        "image": image.asset->url
+      }
+    }
+  }
+`
