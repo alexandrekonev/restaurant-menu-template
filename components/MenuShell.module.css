@@ -248,7 +248,7 @@
 .categoryButton.featuredBtn.active {
   background: var(--copper-dk);
   border-bottom-color: var(--copper-dk);
-  color: var(--copper);
+  color: var(--warm-gray);
 }
 
 /* ── Main Content ── */
