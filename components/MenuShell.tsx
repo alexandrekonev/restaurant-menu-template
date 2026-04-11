@@ -484,6 +484,15 @@ export default function MenuShell({
 
       {/* ── Floating: Reservation + Call ─────────────────────────────────── */}
       <div className={styles.fabGroup}>
+        {settings?.reservationEmail && (
+          <button
+            className={styles.fabReservation}
+            onClick={() => setReservationOpen(true)}
+            aria-label={locale === 'bg' ? 'Резервация' : 'Reservation'}
+          >
+            {locale === 'bg' ? 'Резервация' : 'Reservation'}
+          </button>
+        )}
         {settings?.phone && (
           <a
             href={`tel:${settings.phone}`}
@@ -493,15 +502,6 @@ export default function MenuShell({
           >
             <IconPhone />
           </a>
-        )}
-        {settings?.reservationEmail && (
-          <button
-            className={styles.fabReservation}
-            onClick={() => setReservationOpen(true)}
-            aria-label={locale === 'bg' ? 'Резервация' : 'Reservation'}
-          >
-            {locale === 'bg' ? 'Резервация' : 'Reservation'}
-          </button>
         )}
       </div>
 

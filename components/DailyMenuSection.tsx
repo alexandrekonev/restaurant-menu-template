@@ -4,6 +4,15 @@ import styles from './DailyMenuSection.module.css'
 
 const EUR_TO_BGN = 1.95583
 
+const SECTION_TYPE_LABELS: Record<string, { bg: string; en: string }> = {
+  soups:     { bg: 'Супи',           en: 'Soups' },
+  starters:  { bg: 'Предястия',      en: 'Starters' },
+  mains:     { bg: 'Основни ястия',  en: 'Main Dishes' },
+  salads:    { bg: 'Салати',         en: 'Salads' },
+  desserts:  { bg: 'Десерти',        en: 'Desserts' },
+  surprises: { bg: 'Изненади',       en: 'Surprises' },
+}
+
 function parseDishPrice(price: number | string | null | undefined): number | null {
   if (price == null || price === '') return null
   const num = typeof price === 'number' ? price : parseFloat(String(price).replace(',', '.'))
@@ -55,15 +64,11 @@ export default function DailyMenuSection({
 
   return (
     <section className={styles.section}>
-      <div className={styles.header}>
-        {!hideTitle && <h2 className={styles.title}>{ui_t('lunchMenu', locale)}</h2>}
-        <div className={styles.timeWindow}>
-          <span className={styles.timeLabel}>{ui_t('validFrom', locale)}:</span>
-          <span className={styles.time}>{menu.validFrom}</span>
-          <span className={styles.timeLabel}>{ui_t('validUntil', locale)}:</span>
-          <span className={styles.time}>{menu.validUntil}</span>
+      {!hideTitle && (
+        <div className={styles.header}>
+          <h2 className={styles.title}>{ui_t('lunchMenu', locale)}</h2>
         </div>
-      </div>
+      )}
 
       {menu.chefNote && (
         <div className={styles.chefDesc}>
@@ -92,7 +97,9 @@ export default function DailyMenuSection({
           {menu.sections.map((section: any, idx: number) => (
             <div key={idx} className={styles.sectionGroup}>
               <h3 className={styles.sectionHeading}>
-                {t(section.heading, locale)}
+                {section.sectionType && SECTION_TYPE_LABELS[section.sectionType]
+                  ? (SECTION_TYPE_LABELS[section.sectionType][locale] ?? SECTION_TYPE_LABELS[section.sectionType].bg)
+                  : t(section.heading, locale)}
               </h3>
               <div className={styles.dishes}>
                 {section.dishes && section.dishes.map((dish: any, dishIdx: number) => {

@@ -231,8 +231,8 @@
 
 /* Featured nav button */
 .categoryButton.featuredBtn {
-  background: var(--copper);
-  color: #fff;
+  background: rgba(139, 105, 20, 0.35);
+  color: var(--warm-gray);
   border-bottom-color: transparent;
   border-radius: 4px;
   font-weight: 600;
@@ -241,14 +241,14 @@
 }
 
 .categoryButton.featuredBtn:hover {
-  background: color-mix(in srgb, var(--copper) 80%, #000);
-  color: #fff;
+  background: rgba(139, 105, 20, 0.45);
+  color: var(--silver);
 }
 
 .categoryButton.featuredBtn.active {
-  background: color-mix(in srgb, var(--copper) 70%, #000);
-  border-bottom-color: transparent;
-  color: #fff;
+  background: rgba(139, 105, 20, 0.55);
+  border-bottom-color: var(--copper);
+  color: var(--warm-gray);
 }
 
 /* ── Main Content ── */
@@ -582,7 +582,8 @@
   left: 1.25rem;
   z-index: 200;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 0.6rem;
 }
 
