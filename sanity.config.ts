@@ -1,6 +1,5 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
-import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './sanity/schemaTypes'
 import { orderableDocumentListDeskItem } from '@sanity/orderable-document-list'
 import { CategoryOrderableList } from './sanity/components/CategoryOrderableList'
@@ -10,6 +9,7 @@ export default defineConfig({
   title: 'Restaurant Menu Studio',
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  defaultTool: 'structure',
   plugins: [
     structureTool({
       structure: (S, context) =>
@@ -97,7 +97,6 @@ export default defineConfig({
               ),
           ]),
     }),
-    visionTool(),
   ],
   schema: { types: schemaTypes },
 })
