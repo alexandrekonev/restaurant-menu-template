@@ -135,7 +135,9 @@ export default function MenuShell({
       isWithinTimeWindow(dailyMenu.validFrom, dailyMenu.validUntil)
     )
 
-  const lunchTitle = t(settings?.lunchMenuTitle, locale) ||
+  const lunchTitle =
+    t(dailyMenu?.title, locale) ||
+    t(settings?.lunchMenuTitle, locale) ||
     (locale === 'bg' ? 'Обедно меню' : 'Lunch Menu')
 
   // ── Group items by category slug ──────────────────────────────────────────

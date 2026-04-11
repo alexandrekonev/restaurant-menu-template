@@ -64,6 +64,16 @@ export default defineConfig({
               context,
             }),
 
+            // ── All Menu Items — Alphabetical ──
+            S.listItem()
+              .title('Артикули (А→Я)')
+              .id('allMenuItemsAlpha')
+              .child(
+                S.documentTypeList('menuItem')
+                  .title('Артикули по азбучен ред')
+                  .defaultOrdering([{ field: 'name.bg', direction: 'asc' }])
+              ),
+
             S.divider(),
 
             // ── Daily Menu (Lunch) ──

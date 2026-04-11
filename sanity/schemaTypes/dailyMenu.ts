@@ -1,5 +1,7 @@
 import { defineField, defineType } from 'sanity'
 
+const timeRegex = /^([01]\d|2[0-4]):([0-5]\d)$/
+
 export default defineType({
   name: 'dailyMenu',
   title: 'Daily Menu',
@@ -18,28 +20,28 @@ export default defineType({
       initialValue: true,
     }),
     defineField({
+      name: 'title',
+      title: 'Наименование на менюто',
+      type: 'object',
+      description: 'Напр. "Обедно меню", "Бизнес обяд", "Седмично меню". Ако е празно — използва се настройката от Site Settings.',
+      fields: [
+        { name: 'bg', title: '🇧🇬 Български', type: 'string' },
+        { name: 'en', title: '🇬🇧 English', type: 'string' },
+      ],
+    }),
+    defineField({
       name: 'validFrom',
-      title: 'Valid From',
+      title: 'От час',
       type: 'string',
-      options: {
-        list: [
-          '10:00','10:30','11:00','11:30',
-          '12:00','12:30','13:00','13:30',
-          '14:00','14:30','15:00','15:30',
-        ],
-      },
+      description: 'Формат: HH:MM (00:00 — 24:00)',
+      validation: (Rule) => Rule.regex(timeRegex, { name: 'time', invert: false }),
     }),
     defineField({
       name: 'validUntil',
-      title: 'Valid Until',
+      title: 'До час',
       type: 'string',
-      options: {
-        list: [
-          '12:00','12:30','13:00','13:30',
-          '14:00','14:30','15:00','15:30',
-          '16:00','16:30','17:00',
-        ],
-      },
+      description: 'Формат: HH:MM (00:00 — 24:00)',
+      validation: (Rule) => Rule.regex(timeRegex, { name: 'time', invert: false }),
     }),
     defineField({
       name: 'chefNote',
@@ -124,83 +126,13 @@ export default defineType({
             },
             {
               name: 'dishes',
-              title: 'Dishes',
+              title: 'Ястия',
+              description: 'Изберете от съществуващите артикули в менюто.',
               type: 'array',
               of: [
                 {
-                  type: 'object',
-                  name: 'dish',
-                  title: 'Dish',
-                  preview: {
-                    select: {
-                      title: 'name.bg',
-                      subtitle: 'price',
-                    },
-                    prepare({ title, subtitle }: { title?: string; subtitle?: number }) {
-                      return {
-                        title: title || '—',
-                        subtitle: subtitle != null ? `€ ${Number(subtitle).toFixed(2)}` : '',
-                      }
-                    },
-                  },
-                  fields: [
-                    {
-                      name: 'name',
-                      title: 'Name',
-                      type: 'object',
-                      fields: [
-                        {
-                          name: 'bg',
-                          title: 'Bulgarian',
-                          type: 'string',
-                          validation: (Rule) => Rule.required(),
-                        },
-                        {
-                          name: 'en',
-                          title: 'English',
-                          type: 'string',
-                        },
-                      ],
-                      validation: (Rule) => Rule.required(),
-                    },
-                    {
-                      name: 'description',
-                      title: 'Description',
-                      type: 'object',
-                      fields: [
-                        {
-                          name: 'bg',
-                          title: 'Bulgarian',
-                          type: 'string',
-                        },
-                        {
-                          name: 'en',
-                          title: 'English',
-                          type: 'string',
-                        },
-                      ],
-                    },
-                    {
-                      name: 'price',
-                      title: 'Цена (EUR, цяло число)',
-                      description: 'Въведи цяло число — напр. 12. Системата показва € 12.00 и стойността в лева.',
-                      type: 'number',
-                    },
-                    {
-                      name: 'tags',
-                      title: 'Tags',
-                      type: 'array',
-                      of: [{ type: 'string' }],
-                    },
-                    {
-                      name: 'image',
-                      title: 'Image',
-                      type: 'image',
-                      options: {
-                        hotspot: true,
-                      },
-                    },
-                  ],
+                  type: 'reference',
+                  to: [{ type: 'menuItem' }],
                 },
               ],
             },

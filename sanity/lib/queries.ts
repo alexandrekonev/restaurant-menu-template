@@ -59,12 +59,14 @@ export const todayMenuQuery = `
   *[_type == "dailyMenu" && date == $today && isActive == true][0] {
     _id,
     date,
+    title,
     validFrom,
     validUntil,
     chefNote,
     sections[] {
       heading,
-      dishes[] {
+      dishes[]-> {
+        _id,
         name,
         description,
         price,
