@@ -53,9 +53,13 @@ export default function DailyMenuSection({
   showPriceEur = true,
   showPriceBgn = true,
 }: DailyMenuSectionProps) {
-  if (!menu) {
-    return null
-  }
+  if (!menu) return null
+
+  const hasContent =
+    menu.chefNote?.bg || menu.chefNote?.en ||
+    menu.sections?.some((s: any) => s.dishes?.length > 0)
+
+  if (!hasContent) return null
 
   const isActive = isWithinTimeWindow(
     menu.validFrom || '12:00',

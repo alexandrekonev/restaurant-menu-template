@@ -64,6 +64,7 @@ export const todayMenuQuery = `
     validUntil,
     chefNote,
     sections[] {
+      sectionType,
       heading,
       dishes[]-> {
         _id,

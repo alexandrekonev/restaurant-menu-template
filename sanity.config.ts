@@ -76,6 +76,17 @@ export default defineConfig({
 
             S.divider(),
 
+            // ── Lunch Items (reusable pool) ──
+            S.listItem()
+              .title('🍲 Артикули за обедно меню')
+              .id('lunchItems')
+              .child(
+                S.documentList()
+                  .title('Артикули за обедно меню')
+                  .filter('_type == "lunchItem"')
+                  .defaultOrdering([{ field: 'name.bg', direction: 'asc' }])
+              ),
+
             // ── Daily Menu (Lunch) ──
             S.listItem()
               .title('Daily Menu (Lunch)')

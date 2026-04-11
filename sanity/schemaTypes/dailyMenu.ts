@@ -166,12 +166,13 @@ export default defineType({
             {
               name: 'dishes',
               title: 'Ястия',
-              description: 'Изберете от съществуващите артикули в менюто.',
+              description: 'Изберете от артикулите за обедно меню.',
               type: 'array',
               of: [
                 {
                   type: 'reference',
-                  to: [{ type: 'menuItem' }],
+                  to: [{ type: 'lunchItem' }],
+                  options: { weak: true },
                 },
               ],
             },

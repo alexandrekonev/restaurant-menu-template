@@ -231,7 +231,7 @@
 
 /* Featured nav button */
 .categoryButton.featuredBtn {
-  background: rgba(139, 105, 20, 0.35);
+  background: var(--copper);
   color: var(--warm-gray);
   border-bottom-color: transparent;
   border-radius: 4px;
@@ -241,14 +241,14 @@
 }
 
 .categoryButton.featuredBtn:hover {
-  background: rgba(139, 105, 20, 0.45);
+  background: var(--copper);
   color: var(--silver);
 }
 
 .categoryButton.featuredBtn.active {
-  background: rgba(139, 105, 20, 0.55);
-  border-bottom-color: var(--copper);
-  color: var(--warm-gray);
+  background: var(--copper-dk);
+  border-bottom-color: var(--copper-dk);
+  color: var(--copper);
 }
 
 /* ── Main Content ── */
